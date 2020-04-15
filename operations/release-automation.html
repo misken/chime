@@ -4,7 +4,7 @@
     <head>
         <meta charset="UTF-8">
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
-        <title>The chime-live Cluster · GitBook</title>
+        <title>Release Automation · GitBook</title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="description" content="">
         <meta name="generator" content="GitBook 3.2.3">
@@ -57,10 +57,10 @@
     <link rel="shortcut icon" href="../gitbook/images/favicon.ico" type="image/x-icon">
 
     
-    <link rel="next" href="heroku.html" />
+    <link rel="next" href="chime-live-cluster.html" />
     
     
-    <link rel="prev" href="release-automation.html" />
+    <link rel="prev" href="release-process.html" />
     
 
     </head>
@@ -232,7 +232,7 @@
             
         </li>
     
-        <li class="chapter " data-level="1.4.2" data-path="release-automation.html">
+        <li class="chapter active" data-level="1.4.2" data-path="release-automation.html">
             
                 <a href="release-automation.html">
             
@@ -245,7 +245,7 @@
             
         </li>
     
-        <li class="chapter active" data-level="1.4.3" data-path="chime-live-cluster.html">
+        <li class="chapter " data-level="1.4.3" data-path="chime-live-cluster.html">
             
                 <a href="chime-live-cluster.html">
             
@@ -397,7 +397,7 @@
     <!-- Title -->
     <h1>
         <i class="fa fa-circle-o-notch fa-spin"></i>
-        <a href=".." >The chime-live Cluster</a>
+        <a href=".." >Release Automation</a>
     </h1>
 </div>
 
@@ -412,33 +412,21 @@
     
                                 <section class="normal markdown-section">
                                 
-                                <h1 id="operations-the-chime-live-cluster">Operations: The <code>chime-live</code> Cluster</h1>
-<h2 id="connecting-with-kubectl">Connecting with <code>kubectl</code></h2>
+                                <h1 id="operations-release-deployment">Operations: Release Deployment</h1>
+<p>The release deployment is an automated process which tracks the following steps:</p>
 <ol>
-<li><a href="https://kubernetes.io/docs/tasks/tools/install-kubectl/" target="_blank">Install kubectl</a></li>
-<li><a href="https://krew.sigs.k8s.io/docs/user-guide/setup/install/" target="_blank">Install Krew</a>:</li>
-<li><p><a href="https://github.com/corneliusweig/konfig#via-krew" target="_blank">Install konfig</a>:</p>
-<pre><code class="lang-bash"> kubectl krew install konfig
-</code></pre>
-</li>
-<li><p>Obtain <code>chime-live-kubeconfig.yaml</code> file from Code for Philly ops team</p>
-<ul>
-<li>This file contains connection details and credentials for managing the cluster, treat its contents as top-secret!</li>
-</ul>
-</li>
-<li><p>Merge <code>chime-live-kubeconfig.yaml</code> into your local configuration:</p>
-<pre><code class="lang-bash"> kubectl konfig import --save ~/Downloads/chime-live-kubeconfig.yaml
-</code></pre>
-</li>
-<li><p>Switch to <code>lke_chime-live</code> context:</p>
-<pre><code class="lang-bash"> kubectl config use-context lke_chime-live
-</code></pre>
-</li>
-<li><p>Verify connection:</p>
-<pre><code class="lang-bash"> kubectl get pod --all-namespaces
-</code></pre>
-</li>
+<li><strong>human</strong>: Create a GitHub Release</li>
+<li><em>bot</em>: Build a container image from the release</li>
+<li><em>bot</em>: Push container image to GitHub packages</li>
+<li><em>bot</em>: Generate manifest files to deploy release</li>
+<li><em>bot</em>: Publish manifest files to GitHub release</li>
+<li><em>bot</em>: Open Pull Request into <code>releases/v1</code> from <code>develop</code></li>
+<li><em>bot</em>: Comment on PR showing changes to be applied by deployment</li>
+<li><strong>human</strong>: Approve/merge release</li>
+<li><em>bot</em>: Download manifest files from GitHub release</li>
+<li><em>bot</em>: Apply manifest files for release to cluster</li>
 </ol>
+<p>The automated portions are implemented in .github/workflows/infra-release.yml and .github/workflows/infra-deploy.yml</p>
 
                                 
                                 </section>
@@ -466,12 +454,12 @@
 
             
                 
-                <a href="release-automation.html" class="navigation navigation-prev " aria-label="Previous page: Release Automation">
+                <a href="release-process.html" class="navigation navigation-prev " aria-label="Previous page: Release Process">
                     <i class="fa fa-angle-left"></i>
                 </a>
                 
                 
-                <a href="heroku.html" class="navigation navigation-next " aria-label="Next page: Deploy to Heroku">
+                <a href="chime-live-cluster.html" class="navigation navigation-next " aria-label="Next page: The chime-live Cluster">
                     <i class="fa fa-angle-right"></i>
                 </a>
                 
@@ -482,7 +470,7 @@
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"The chime-live Cluster","level":"1.4.3","depth":2,"next":{"title":"Deploy to Heroku","level":"1.4.4","depth":2,"path":"operations/heroku.md","ref":"./operations/heroku.md","articles":[]},"previous":{"title":"Release Automation","level":"1.4.2","depth":2,"path":"operations/release-automation.md","ref":"./operations/release-automation.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["mermaid@git+https://github.com/JarvusInnovations/gitbook-plugin-mermaid.git"],"pluginsConfig":{"mermaid":{},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"operations/chime-live-cluster.md","mtime":"2020-04-15T11:23:30.617Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2020-04-15T11:23:39.860Z"},"basePath":"..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Release Automation","level":"1.4.2","depth":2,"next":{"title":"The chime-live Cluster","level":"1.4.3","depth":2,"path":"operations/chime-live-cluster.md","ref":"./operations/chime-live-cluster.md","articles":[]},"previous":{"title":"Release Process","level":"1.4.1","depth":2,"path":"operations/release-process.md","ref":"./operations/release-process.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["mermaid@git+https://github.com/JarvusInnovations/gitbook-plugin-mermaid.git"],"pluginsConfig":{"mermaid":{},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"operations/release-automation.md","mtime":"2020-04-15T11:23:30.617Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2020-04-15T11:23:39.860Z"},"basePath":"..","book":{"language":""}});
         });
     </script>
 </div>
